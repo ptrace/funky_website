@@ -116,21 +116,32 @@ dialog.dialog{
 
 /* Confetti FX */
 .fx{
-  position: fixed; inset:0; pointer-events:none; overflow:hidden;
+  position: fixed; inset:0;
+  pointer-events:none; overflow:hidden;
+  z-index: 9999; /* <- add this */
 }
 .piece{
-  position:absolute; width:10px; height:16px; opacity:.95;
-  will-change: transform;
-  animation: fall var(--dur) linear forwards, sway calc(var(--dur) * .5) ease-in-out infinite alternate;
-  transform: translate3d(var(--x,0), -10vh, 0) rotate(var(--rot,0deg));
+  position:absolute;
+  width:10px; height:16px; opacity:.95;
+  will-change: transform, top, margin-inline-start;
+  left: var(--x, 0px);   /* <- use left for horizontal placement */
+  top: -10vh;            /* start above the viewport */
+  transform: rotate(var(--rot, 0deg));
+  animation:
+    fallY var(--dur) linear forwards,
+    sway  calc(var(--dur) * .5) ease-in-out infinite alternate;
 }
-@keyframes fall{
-  to { transform: translate3d(var(--x), 110vh, 0) rotate(calc(var(--rot) + 360deg)); }
+
+@keyframes fallY{
+  to {
+    top: 110vh;
+    transform: rotate(calc(var(--rot) + 360deg));
+  }
 }
+
 @keyframes sway{
   to { margin-inline-start: 60px; }
 }
-
 
 .site-footer{
   position: fixed;
@@ -151,4 +162,8 @@ dialog.dialog{
 }
 .footer-link:hover{
   opacity: 0.7;
+}
+
+#bgAudio {
+  display: none;
 }
