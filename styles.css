@@ -1,0 +1,154 @@
+:root{
+  --radius: 24px;
+  --pad: clamp(12px, 2vmin, 28px);
+  --fg: #0b0b0b;
+  --fg-strong: #000;
+  --glass: rgba(255,255,255,.28);
+  --glass-strong: rgba(255,255,255,.55);
+  --shadow: 0 10px 30px rgba(0,0,0,.16);
+}
+
+/* Full-viewport rainbow background */
+.bg{
+  position: fixed; inset: 0; z-index: -1;
+  background: conic-gradient(
+    from 0deg,
+    #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787, #e40303
+  );
+  filter: saturate(1.2) contrast(1.05);
+  animation: spin 18s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--fg);
+  background:#0000;
+}
+
+.wrap{
+  min-height:100dvh;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding: 10vmin 4vmin;
+}
+
+.headline{
+  margin:0 0 .3em;
+  font-weight:900;
+  line-height:1.05;
+  font-size: clamp(40px, 9vw, 120px);
+  letter-spacing: -0.01em;
+  color: var(--fg-strong);
+  text-shadow: 0 3px 12px rgba(255,255,255,.35);
+  mix-blend-mode: hard-light;
+}
+.subline{
+  margin:.2em 0 1.2em;
+  font-size: clamp(18px, 2.6vw, 32px);
+  font-weight:600;
+  backdrop-filter: blur(6px);
+  background: var(--glass);
+  padding: .55em .9em;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.ghost-btn{
+  appearance: none;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #000;
+  font-weight: 700;
+  padding: .75em 1.1em;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform .15s ease, background .2s ease, color .2s ease;
+  backdrop-filter: blur(6px);
+}
+.ghost-btn:hover{ transform: translateY(-1px) scale(1.03); background:#fff; }
+.ghost-btn:active{ transform: translateY(0) scale(.99); }
+
+.overlay{
+  position: fixed; inset:0; background: rgba(0,0,0,.35);
+  opacity:0; pointer-events:none; transition: opacity .25s ease;
+}
+.overlay.show{ opacity:1; pointer-events:auto; }
+
+dialog.dialog{
+  border: none; padding:0; background: transparent;
+}
+.dialog::backdrop{ background: none; }
+.dialog-inner{
+  background: var(--glass-strong);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--pad);
+  min-width: min(92vw, 560px);
+}
+.dialog-title{
+  font-size: clamp(20px, 3.8vw, 28px);
+  font-weight: 800;
+  margin: 0 0 1em;
+}
+.dialog-actions{
+  display:flex; gap:.6em; justify-content:center; flex-wrap:wrap;
+}
+.btn{
+  appearance:none;
+  border:none;
+  border-radius: 12px;
+  padding:.7em 1.1em;
+  font-weight:800;
+  cursor:pointer;
+  transition: transform .12s ease, filter .2s ease;
+}
+.btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+.btn:active{ transform: translateY(0); }
+
+.btn.yes{ background:#16c172; color:#082c16; }
+.btn.no{ background:#ff5b5b; color:#3c0b0b; }
+
+/* Confetti FX */
+.fx{
+  position: fixed; inset:0; pointer-events:none; overflow:hidden;
+}
+.piece{
+  position:absolute; width:10px; height:16px; opacity:.95;
+  will-change: transform;
+  animation: fall var(--dur) linear forwards, sway calc(var(--dur) * .5) ease-in-out infinite alternate;
+  transform: translate3d(var(--x,0), -10vh, 0) rotate(var(--rot,0deg));
+}
+@keyframes fall{
+  to { transform: translate3d(var(--x), 110vh, 0) rotate(calc(var(--rot) + 360deg)); }
+}
+@keyframes sway{
+  to { margin-inline-start: 60px; }
+}
+
+
+.site-footer{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  padding: .6em 1em;
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(6px);
+  font-weight: 600;
+}
+
+.footer-link{
+  color: #000;
+  text-decoration: none;
+  transition: opacity .2s ease;
+}
+.footer-link:hover{
+  opacity: 0.7;
+}
